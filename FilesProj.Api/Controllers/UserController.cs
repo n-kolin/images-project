@@ -64,7 +64,7 @@ namespace FilesProj.Api.Controllers
 
         public async Task<ActionResult<IEnumerable<MonthlyStatsDto>>> GetLoginsStats()
         {
-            return Ok(await _userService.GetLoginsStatsAsync());
+            return Ok(await _userService.GetRegistrationStatsAsync());
         }
 
         // GET api/<UserController>/5/files

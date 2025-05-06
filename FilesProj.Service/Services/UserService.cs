@@ -35,7 +35,7 @@ namespace FilesProj.Service.Services
             var userDto = _mapper.Map<UserDto>(user);
             return userDto;
         }
-        public async Task<IEnumerable<MonthlyStatsDto>> GetLoginsStatsAsync()
+        public async Task<IEnumerable<MonthlyStatsDto>> GetRegistrationStatsAsync()
         {
             var users = await _repositoryManager.Users.GetAllAsync();
 
