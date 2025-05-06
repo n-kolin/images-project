@@ -13,6 +13,8 @@ namespace FilesProj.Core.IServices
 
         Task<UserDto> GetByIdAsync(int id);
         Task<UserDto> GetByEmailAsync(string email);
+        Task<IEnumerable<MonthlyStatsDto>> GetLoginsStatsAsync();
+
         Task<IEnumerable<FileDto>> GetFilesAsync(int id);
         Task<IEnumerable<FolderDto>> GetFoldersAsync(int id);
         Task<UserDto> DeleteAsync(int id);

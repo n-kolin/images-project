@@ -35,10 +35,31 @@ namespace FilesProj.Service.Services
             var userDto = _mapper.Map<UserDto>(user);
             return userDto;
         }
+        public async Task<IEnumerable<MonthlyStatsDto>> GetLoginsStatsAsync()
+        {
+            var users = await _repositoryManager.Users.GetAllAsync();
 
+            var startDate = DateTime.Now.AddMonths(-12);
+
+            var stats = users
+            .Where(login => login.CreatedAt >= startDate)
+            .GroupBy(login => new { login.CreatedAt.Year, login.CreatedAt.Month })
+            .Select(group => new MonthlyStatsDto
+            {
+                Year = group.Key.Year,
+                Month = group.Key.Month,
+                Count = group.Count()
+            })
+            .OrderBy(stat => stat.Year)
+            .ThenBy(stat => stat.Month)
+            .ToList();
+            return stats;
+
+
+        }
         public async Task<IEnumerable<FileDto>> GetFilesAsync(int id)
         {
-            
+
             var files = await _repositoryManager.Users.GetFilesAsync(id);
             var filesDto = _mapper.Map<List<FileDto>>(files);
             var filesInRoot = filesDto.Where(f => f.FolderId == null).ToList();
@@ -49,7 +70,7 @@ namespace FilesProj.Service.Services
 
             var folders = await _repositoryManager.Users.GetFoldersAsync(id);
             var foldersDto = _mapper.Map<List<FolderDto>>(folders);
-            var foldersInRoot = foldersDto.Where(f=>f.ParentId == null).ToList();
+            var foldersInRoot = foldersDto.Where(f => f.ParentId == null).ToList();
             return foldersInRoot;
         }
 

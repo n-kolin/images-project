@@ -58,6 +58,15 @@ namespace FilesProj.Api.Controllers
 
         }
 
+        // GET: api/<UserController>/logins-stats
+        [HttpGet("logins-stats")]
+        [Authorize(Policy = "AdminOnly")]
+
+        public async Task<ActionResult<IEnumerable<MonthlyStatsDto>>> GetLoginsStats()
+        {
+            return Ok(await _userService.GetLoginsStatsAsync());
+        }
+
         // GET api/<UserController>/5/files
         [HttpGet("{id}/files")]
         [Authorize]
