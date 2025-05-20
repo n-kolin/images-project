@@ -1,4 +1,6 @@
 ﻿using Amazon;
+using Amazon.Rekognition;
+using Amazon.Rekognition.Model;
 using Amazon.S3;
 using Amazon.S3.Model;
 using FilesProj.Core.Entities;
@@ -10,6 +12,9 @@ using System.Linq;
 using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
+using Image = Amazon.Rekognition.Model.Image;
+using S3Object = Amazon.Rekognition.Model.S3Object;
 
 namespace FilesProj.Service.Services
 {
@@ -17,6 +22,8 @@ namespace FilesProj.Service.Services
     {
         private readonly IConfiguration _configuration;
         private readonly IAmazonS3 _s3Client;
+        private readonly AmazonRekognitionClient _rekognitionClient;
+
         private readonly string _bucketName;
 
         public AwsService(IConfiguration configuration)
@@ -26,8 +33,13 @@ namespace FilesProj.Service.Services
             
             var accessKey = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID");
             var secretKey = Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY");
+
             var region = RegionEndpoint.USEast1;
+            var rekAccessKey = Environment.GetEnvironmentVariable("ACCESS_KEY_ID");
+            var rekSecretKey = Environment.GetEnvironmentVariable("SECRET_ACCESS_KEY");
             _s3Client = new AmazonS3Client(accessKey, secretKey, region);
+            _rekognitionClient = new AmazonRekognitionClient(rekAccessKey, rekSecretKey, region);
+
         }
 
         public async Task<string> GetPreSignedUrlAsync(int userId, string path, string fileName, string contentType)
@@ -129,6 +141,41 @@ namespace FilesProj.Service.Services
             return await Task.FromResult(_s3Client.GetPreSignedURL(request));
         }
 
+        public async Task<List<string>> DetectLabelsAsync(string path, int maxLabels = 10, float minConfidence = 75)
+        {
+            var request = new DetectLabelsRequest
+            {
+                Image = new Image
+                {
+                    S3Object = new S3Object
+                    {
+                        Bucket = _bucketName,
+                        Name = path
+                    }
+                },
+                MaxLabels = maxLabels,
+                MinConfidence = minConfidence
+            };
+
+            try
+            {
+                var response = await _rekognitionClient.DetectLabelsAsync(request);
+
+                // Extract label names
+                var labels = response.Labels.Select(label => label.Name).ToList();
+                return labels;
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions (e.g., logging)
+                throw new Exception($"Error detecting labels: {ex.Message}", ex);
+            }
+        }
+
+
 
     }
+
+
+
 }

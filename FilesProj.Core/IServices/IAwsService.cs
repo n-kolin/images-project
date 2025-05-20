@@ -14,6 +14,8 @@ namespace FilesProj.Core.IServices
         Task<string> GetPreSignedUrlAsync(string fileName, string contentType);
 
         Task<string> GetDownloadUrlAsync(string fileName);
+        Task<List<string>> DetectLabelsAsync(string path, int maxLabels = 10, float minConfidence = 75);
+
 
     }
 }

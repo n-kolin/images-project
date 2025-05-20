@@ -21,7 +21,7 @@ namespace FilesProj.Api.Controllers
 
         // GET: api/<UserController>
         [HttpGet]
-        [Authorize(Policy = "AdminOnly")]
+        //[Authorize(Policy = "AdminOnly")]
 
         public async Task<ActionResult<IEnumerable<UserDto>>> Get()
         {
@@ -58,9 +58,9 @@ namespace FilesProj.Api.Controllers
 
         }
 
-        // GET: api/<UserController>/logins-stats
-        [HttpGet("logins-stats")]
-        [Authorize(Policy = "AdminOnly")]
+        // GET: api/<UserController>/registration-stats
+        [HttpGet("registration-stats")]
+        //[Authorize(Policy = "AdminOnly")]
 
         public async Task<ActionResult<IEnumerable<MonthlyStatsDto>>> GetLoginsStats()
         {

@@ -265,7 +265,7 @@ namespace FilesProj.Api.Controllers
 
         // Download File Method
         [HttpGet("download-url")]
-        [Authorize]
+        //[Authorize]
 
         public async Task<ActionResult<string>> DownloadUrl([FromQuery] int userId, [FromQuery] string path)
         {
@@ -302,6 +302,22 @@ namespace FilesProj.Api.Controllers
         //    var files = await _awsService.ListFilesAsync(userName);
         //    return Ok(files);
         //}
+
+
+        [HttpGet("detect-labels")]
+        //[Authorize]
+
+        public async Task<ActionResult<List<string>>> DetectLabels([FromQuery] string path)
+        {
+
+            if (string.IsNullOrEmpty(path))
+            {
+                return BadRequest("Invalid file data");
+            }
+
+            var labels = await _awsService.DetectLabelsAsync(path);
+            return Ok(new { labels });
+        }
     }
 }
 
