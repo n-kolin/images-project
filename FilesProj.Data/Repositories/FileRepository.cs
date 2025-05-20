@@ -23,10 +23,9 @@ namespace FilesProj.Data.Repositories
         }
 
         public async Task<File> GetByIdAsync(int id)
-        {
+        { 
             return await _files
-            .FirstOrDefaultAsync(f => f.Id == id && !f.IsDeleted)
-            ;
+            .FirstOrDefaultAsync(f => f.Id == id && !f.IsDeleted);
         }
         public async Task<File> AddAsync(File file)
         {
