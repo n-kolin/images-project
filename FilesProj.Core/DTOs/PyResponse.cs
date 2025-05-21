@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace FilesProj.Core.DTOs
 {
-    internal class PyResponse
+    public class PyResponse
     {
+        public string Status { get; set; }
+        public Dictionary<string, object> Data { get; set; }
     }
 }

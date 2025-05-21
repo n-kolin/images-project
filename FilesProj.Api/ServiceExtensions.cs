@@ -22,6 +22,8 @@ namespace FilesProj.Api
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IAuthService, AuthService>();
 
+            services.AddScoped<IPyService, PyService>();
+
             services.AddScoped<IAwsService, AwsService>();
 
 

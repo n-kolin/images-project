@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FilesProj.Api.PostModels;
+using FilesProj.Core.DTOs;
+using FilesProj.Core.IServices;
+using FilesProj.Service.Services;
+using Microsoft.AspNetCore.Mvc;
+using System.Net.WebSockets;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -6,8 +11,10 @@ namespace FilesProj.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PythonController : ControllerBase
+    public class PythonController(IPyService pyService) : ControllerBase
     {
+        private readonly IPyService _pyService = pyService;
+
         // GET: api/<PythonController>
         [HttpGet]
         public IEnumerable<string> Get()
@@ -24,8 +31,12 @@ namespace FilesProj.Api.Controllers
 
         // POST api/<PythonController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult<PyResponse>> Post([FromBody] PromptModel value)
         {
+            var res  = await _pyService.ProcessPromptAsync(value);
+            if (value.Prompt == null || value.Prompt == "")
+                return BadRequest();
+            return res;
         }
 
         // PUT api/<PythonController>/5
