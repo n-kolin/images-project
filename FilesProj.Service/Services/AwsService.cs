@@ -29,8 +29,8 @@ namespace FilesProj.Service.Services
         public AwsService(IConfiguration configuration)
         {
             _configuration = configuration;
-            _bucketName = _configuration["AWS:BucketName"];
-            
+            _bucketName = Environment.GetEnvironmentVariable("AWS_BucketName");
+
             var accessKey = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID");
             var secretKey = Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY");
 

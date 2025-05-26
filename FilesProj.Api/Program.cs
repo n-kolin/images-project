@@ -34,7 +34,7 @@ using System.Text;
 
 //var app = builder.Build();
 
-//// äôòìú Swagger
+//// ï¿½ï¿½ï¿½ï¿½ï¿½ Swagger
 //app.UseSwagger();
 //app.UseSwaggerUI(c =>
 //{
@@ -116,7 +116,8 @@ builder.Services.AddSwaggerGen(options =>
 
 //cors
 builder.Services.AddCors(opt => opt.AddPolicy("MyPolicy", policy => {
-    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+
 }));
 //
 
@@ -137,9 +138,9 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        ValidIssuer = Environment.GetEnvironmentVariable("Jwt_Issuer"),
+        ValidAudience = Environment.GetEnvironmentVariable("Jwt_Audience"),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("Jwt_Key")))
     };
 });
 
