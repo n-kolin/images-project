@@ -1,3 +1,4 @@
+using Amazon.Auth.AccessControlPolicy;
 using DotNetEnv;
 using FilesProj.Api;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -116,10 +117,12 @@ builder.Services.AddSwaggerGen(options =>
 
 //cors
 builder.Services.AddCors(opt => opt.AddPolicy("MyPolicy", policy => {
-    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+    policy.WithOrigins(
+             "https://image-editor-amq7.onrender.com",
+            "https://localhost:5173").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
 
 }));
-//
+
 
 //jwt
 
