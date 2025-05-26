@@ -119,6 +119,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddCors(opt => opt.AddPolicy("MyPolicy", policy => {
     policy.WithOrigins(
              "https://image-editor-amq7.onrender.com",
+             "https://image-editor-manager.onrender.com",
             "https://localhost:5173").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
 
 }));
