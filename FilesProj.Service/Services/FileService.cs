@@ -49,7 +49,7 @@ namespace FilesProj.Service.Services
             int mb = 5;
 
 
-            if (!IsValidType(fileDto.Type) || string.IsNullOrEmpty(fileDto.Name) || fileDto.Size > mb * 1024 * 1024)
+            if (!IsValidType(fileDto.Type) || string.IsNullOrEmpty(fileDto.Name) || fileDto.Size > mb * 1024 * 1024 * 1024)
             {
                 throw new ArgumentException();
             }
